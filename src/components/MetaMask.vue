@@ -62,12 +62,20 @@ export default {
     },
     signatureMsg() {
       if(this.signature.length) {
-        var result = web3.personal.sign(web3.fromUtf8(this.signature), web3.eth.coinbase, console.log);
+        web3.personal.sign(web3.fromUtf8(this.signature), web3.eth.coinbase, (err, result) => {
+          if(err){
+            alert("cancel");
+          } else {
+            this.signatureArray.push(this.signature);
+            this.signature = '';
+          }
+        });
       }
     },
     async entrance() {
       await ethereum.enable();
       if(ethereum.selectedAddress) {
+        this.adress = ethereum.selectedAddress;
         this.isEntrance = true;
       }
     }
@@ -75,7 +83,9 @@ export default {
   created() {
     if(ethereum.selectedAddress) {
       this.isEntrance = true;
+      console.log(ethereum.selectedAddress);
       this.adress = ethereum.selectedAddress;
+      console.log(this.adress);
       ethereum.on('accountsChanged', function (accounts) {
         // вотчер на изменение адреса аккаунта
         console.log(accounts);
