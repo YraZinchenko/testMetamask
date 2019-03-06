@@ -83,9 +83,7 @@ export default {
   created() {
     if(ethereum.selectedAddress) {
       this.isEntrance = true;
-      console.log(ethereum.selectedAddress);
       this.adress = ethereum.selectedAddress;
-      console.log(this.adress);
       ethereum.on('accountsChanged', function (accounts) {
         // вотчер на изменение адреса аккаунта
         console.log(accounts);
