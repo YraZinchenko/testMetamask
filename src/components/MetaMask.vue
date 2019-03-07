@@ -76,7 +76,7 @@ export default {
     }
   },
   methods:{
-    signatureMsg() {
+    signatureMsg() { //message signing method
       if(this.signature.length) {
         web3.personal.sign(web3.fromUtf8(this.signature), web3.eth.coinbase, (err, result) => {
           if(err){
@@ -88,7 +88,7 @@ export default {
         });
       }
     },
-    async entrance() {
+    async entrance() { //application entry method
       await ethereum.enable();
       if(ethereum.selectedAddress) {
         this.adress = ethereum.selectedAddress;
@@ -96,29 +96,29 @@ export default {
         this.isEntrance = true;
       }
     },
-    changeCode(code) {
+    changeCode(code) { //address change method
       if(typeof(code[0]) !== 'undefined') {
         this.adress = code[0];
       } else{
         this.isEntrance = false;
       }
     },
-    installMetaMask() {
+    installMetaMask() { //button to open the extension if it is not installed
       window.open("https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn");
     }
   },
   created() {
-    if(typeof window.ethereum !== 'undefined') {
+    if(typeof window.ethereum !== 'undefined') { //check if extension is installed
       this.appReady = true;
-      if(ethereum.selectedAddress) {
+      if(ethereum.selectedAddress) { //check whether the user is online
         this.isEntrance = true;
         this.networkCode = ethereum.networkVersion;
         this.adress = ethereum.selectedAddress;
         const salfe = this;
-        ethereum.on('accountsChanged', function (accounts) {
+        ethereum.on('accountsChanged', function (accounts) { //address change tracking
           salfe.changeCode(accounts);
         })
-        window.ethereum.on('networkChanged', function (netId) {
+        window.ethereum.on('networkChanged', function (netId) { //network change tracking
           this.networkCode = netId;
         })
       }
