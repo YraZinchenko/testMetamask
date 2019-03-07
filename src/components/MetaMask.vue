@@ -11,6 +11,9 @@
           adress: {{ adress }}
         </div>
         <div>
+          Network id: {{ networkCode }}
+        </div>
+        <div>
           Инпут для сообщения подписи
         </div>
         <input type="text" v-model="signature">
@@ -59,7 +62,8 @@ export default {
       signature: '',
       signatureArray: [],
       isEntrance: false,
-      adress: null
+      adress: null,
+      networkCode: null
     }
   },
   methods:{
@@ -72,7 +76,7 @@ export default {
           if(err){
             alert("cancel");
           } else {
-            this.signatureArray.push(this.signature);
+            this.signatureArray.push(result);
             this.signature = '';
           }
         });
@@ -80,23 +84,29 @@ export default {
     },
     async entrance() {
       await ethereum.enable();
-      if(ethereum.selectedAddress) {
+      if(ethereum.selectedAddre) {
         this.adress = ethereum.selectedAddress;
+        this.networkCode = ethereum.networkVersion;
         this.isEntrance = true;
       }
+    },
+    changeCode(code) {
+      this.adress = code[0];
     }
   },
   created() {
     if(ethereum.selectedAddress) {
       this.isEntrance = true;
+      this.networkCode = ethereum.networkVersion;
       this.adress = ethereum.selectedAddress;
+      const salfe = this;
       ethereum.on('accountsChanged', function (accounts) {
         // вотчер на изменение адреса аккаунта
-        console.log(accounts);
+        salfe.changeCode(accounts);
       })
       window.ethereum.on('networkChanged', function (netId) {
         // вотчер на изменение сети
-        console.log(netId);
+        this.networkCode = netId;
       })
     }
   }
