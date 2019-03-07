@@ -1,9 +1,6 @@
 <template>
   <div>
-    <VueMetamask 
-      userMessage="msg" 
-      @onComplete="onComplete"
-    >
+    <VueMetamask>
     </VueMetamask>
     <template v-if="isEntrance">
       <div>
@@ -70,7 +67,6 @@ export default {
   name: 'HelloWorld',
   data(){
     return {
-      msg: "This is demo net work",
       signature: '',
       signatureArray: [],
       isEntrance: false,
@@ -80,9 +76,6 @@ export default {
     }
   },
   methods:{
-    onComplete(data){
-      // console.log(data);
-    },
     signatureMsg() {
       if(this.signature.length) {
         web3.personal.sign(web3.fromUtf8(this.signature), web3.eth.coinbase, (err, result) => {
@@ -97,14 +90,18 @@ export default {
     },
     async entrance() {
       await ethereum.enable();
-      if(ethereum.selectedAddre) {
+      if(ethereum.selectedAddress) {
         this.adress = ethereum.selectedAddress;
         this.networkCode = ethereum.networkVersion;
         this.isEntrance = true;
       }
     },
     changeCode(code) {
-      this.adress = code[0];
+      if(typeof(code[0]) !== 'undefined') {
+        this.adress = code[0];
+      } else{
+        this.isEntrance = false;
+      }
     },
     installMetaMask() {
       window.open("https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn");
@@ -114,21 +111,17 @@ export default {
     if(typeof window.ethereum !== 'undefined') {
       this.appReady = true;
       if(ethereum.selectedAddress) {
-      this.isEntrance = true;
-      this.networkCode = ethereum.networkVersion;
-      this.adress = ethereum.selectedAddress;
-      const salfe = this;
-      ethereum.on('accountsChanged', function (accounts) {
-        // вотчер на изменение адреса аккаунта
-        salfe.changeCode(accounts);
-      })
-      window.ethereum.on('networkChanged', function (netId) {
-        // вотчер на изменение сети
-        this.networkCode = netId;
-      })
-    }
-    } else{
-      console.log(1);
+        this.isEntrance = true;
+        this.networkCode = ethereum.networkVersion;
+        this.adress = ethereum.selectedAddress;
+        const salfe = this;
+        ethereum.on('accountsChanged', function (accounts) {
+          salfe.changeCode(accounts);
+        })
+        window.ethereum.on('networkChanged', function (netId) {
+          this.networkCode = netId;
+        })
+      }
     }
   }
 

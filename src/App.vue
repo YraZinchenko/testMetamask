@@ -22,7 +22,7 @@ export default {
 
 <style>
 .wrapper{
-  max-width: 300px;
+  max-width: 500px;
   margin: 0 auto;
 }
 .wrap-word{
