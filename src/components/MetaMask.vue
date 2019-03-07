@@ -5,38 +5,44 @@
       @onComplete="onComplete"
     >
     </VueMetamask>
-    <div v-if="isEntrance">
+    <template v-if="isEntrance">
       <div>
-        adress: {{ adress }}
-      </div>
-      <div>
-        Инпут для сообщения подписи
-      </div>
-      <input type="text" v-model="signature">
-      <div>
-        <button @click="signatureMsg">
-          подписать сообщения
-        </button>
-      </div>
-      <div v-if="signatureArray.length">
-        подписаные сообщения:
-      </div>
-      <template v-if="signatureArray.length">
-        <div v-for="item in signatureArray" :key="item" >
-          {{ item }}
+        <div>
+          adress: {{ adress }}
         </div>
-      </template>
-    </div>
-    <div v-if="!isEntrance">
-      <div>
-        Зарегестрируйтесь или войдите в аккаунт.
+        <div>
+          Инпут для сообщения подписи
+        </div>
+        <input type="text" v-model="signature">
+        <div>
+          <button @click="signatureMsg">
+            подписать сообщения
+          </button>
+        </div>
+        <template v-if="signatureArray.length">
+          <div>
+            подписаные сообщения:
+          </div>
+        </template>
+        <template v-if="signatureArray.length">
+          <div v-for="item in signatureArray" :key="item" >
+            {{ item }}
+          </div>
+        </template>
       </div>
+    </template>
+    <template v-if="!isEntrance">
       <div>
-        <button @click="entrance">
-          вход
-        </button>
+        <div>
+          Зарегестрируйтесь или войдите в аккаунт.
+        </div>
+        <div>
+          <button @click="entrance">
+            вход
+          </button>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
