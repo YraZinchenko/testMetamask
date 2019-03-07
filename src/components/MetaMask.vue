@@ -8,41 +8,53 @@
     <template v-if="isEntrance">
       <div>
         <div>
-          adress: {{ adress }}
+          <h2>Adress:</h2> <h3 class="wrap-word">{{ adress }}</h3>
         </div>
         <div>
-          Network id: {{ networkCode }}
+          <h2>Network id:</h2> <h3>{{ networkCode }}</h3>
         </div>
+        <v-text-field
+          label="Text"
+          outline
+          v-model="signature"
+          hide-details
+        ></v-text-field>
         <div>
-          Инпут для сообщения подписи
-        </div>
-        <input type="text" v-model="signature">
-        <div>
-          <button @click="signatureMsg">
-            подписать сообщения
-          </button>
+          <v-btn color="success" @click="signatureMsg">Sign posts</v-btn>
         </div>
         <template v-if="signatureArray.length">
           <div>
-            подписаные сообщения:
+            <h1>
+              Signed messages:
+            </h1>
           </div>
         </template>
         <template v-if="signatureArray.length">
           <div v-for="item in signatureArray" :key="item" >
-            {{ item }}
+            <div class="wrap-word">
+              <h4>{{ item }}</h4>
+            </div>
           </div>
         </template>
       </div>
     </template>
-    <template v-if="!isEntrance">
+    <template v-if="!isEntrance && appReady">
       <div>
+        <h1>
+          Sign up or sign in for use app.
+        </h1>
         <div>
-          Зарегестрируйтесь или войдите в аккаунт.
+          <v-btn color="info" @click="entrance">Sign up</v-btn>
         </div>
+      </div>
+    </template>
+    <template v-if="!appReady">
+      <div>
+        <h1>
+          The extension MetaMask is not installed, install to start using the application.
+        </h1>
         <div>
-          <button @click="entrance">
-            вход
-          </button>
+          <v-btn color="warning" large @click="installMetaMask">Install</v-btn>
         </div>
       </div>
     </template>
@@ -63,7 +75,8 @@ export default {
       signatureArray: [],
       isEntrance: false,
       adress: null,
-      networkCode: null
+      networkCode: null,
+      appReady: false
     }
   },
   methods:{
@@ -92,10 +105,15 @@ export default {
     },
     changeCode(code) {
       this.adress = code[0];
+    },
+    installMetaMask() {
+      window.open("https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn");
     }
   },
   created() {
-    if(ethereum.selectedAddress) {
+    if(typeof window.ethereum !== 'undefined') {
+      this.appReady = true;
+      if(ethereum.selectedAddress) {
       this.isEntrance = true;
       this.networkCode = ethereum.networkVersion;
       this.adress = ethereum.selectedAddress;
@@ -108,6 +126,9 @@ export default {
         // вотчер на изменение сети
         this.networkCode = netId;
       })
+    }
+    } else{
+      console.log(1);
     }
   }
 

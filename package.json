@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "vue": "^2.6.6",
-    "vue-metamask": "^1.0.10"
+    "vue-metamask": "^1.0.10",
+    "vuetify": "^1.5.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

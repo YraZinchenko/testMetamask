@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <MetaMask/>
+    <v-app>
+      <div class="wrapper">
+        <img alt="Vue logo" src="./assets/logo.png" >
+        <MetaMask/>
+      </div>
+    </v-app>
   </div>
 </template>
 
@@ -17,12 +21,19 @@ export default {
 </script>
 
 <style>
+.wrapper{
+  max-width: 300px;
+  margin: 0 auto;
+}
+.wrap-word{
+  text-align: center;
+  word-break: break-all;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
